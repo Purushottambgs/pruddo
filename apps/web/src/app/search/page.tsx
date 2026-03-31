@@ -35,7 +35,7 @@ async function SearchResults({
   const candidate = url ?? q ?? "";
   const resolvedUrl = looksLikeUrl(candidate);
   if (resolvedUrl) {
-    redirect(`/${resolvedUrl}`);
+    redirect(`/analyze?url=${encodeURIComponent(resolvedUrl)}`);
   }
 
   if (!q) {

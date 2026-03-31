@@ -1,44 +1,40 @@
 import { redirect } from "next/navigation";
-import { AnalyzePage } from "@/components/analyze-page";
 
-// Reconstruct a product URL from Next.js catch-all slug segments.
-// Example: visiting /https://amazon.com/dp/B09X gives
-//   slug = ['https:', 'amazon.com', 'dp', 'B09X']  (// collapses to single /)
-// We join and restore the double-slash after the protocol.
+// Reconstruct URL from catch-all slug segments.
+// Browser collapses https:// → https:/ in path, so we restore it.
 function reconstructUrl(slug: string[]): string | null {
   const joined = slug.join("/");
-  // Restore double-slash after protocol (http: or https:)
   const withProtocol = joined.replace(/^(https?):\/([^/])/, "$1://$2");
 
-  // Must look like a valid URL with a recognised protocol
   if (!withProtocol.startsWith("http://") && !withProtocol.startsWith("https://")) {
+    // Try treating it as a bare domain like amazon.com/dp/...
+    const asDomain = `https://${joined}`;
+    if (/^https:\/\/[a-z0-9-]+\.[a-z]{2,}/i.test(asDomain)) return asDomain;
     return null;
   }
 
-  try {
-    new URL(withProtocol); // throws if malformed
-    return withProtocol;
-  } catch {
-    return null;
-  }
+  return withProtocol;
 }
 
 export default async function CatchAllPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string[] }>;
+  searchParams: Promise<Record<string, string>>;
 }) {
   const { slug } = await params;
+  const qs = await searchParams;
+
   const productUrl = reconstructUrl(slug);
 
-  // Not a URL — send to homepage
-  if (!productUrl) {
-    redirect("/");
-  }
+  if (!productUrl) redirect("/");
 
-  return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <AnalyzePage productUrl={productUrl} />
-    </div>
-  );
+  // Reattach any query params that were part of the original product URL
+  // (e.g. Amazon tracking params that come after ?)
+  const queryString = new URLSearchParams(qs).toString();
+  const fullUrl = queryString ? `${productUrl}?${queryString}` : productUrl;
+
+  // Redirect to /analyze?url= so the URL is safely encoded
+  redirect(`/analyze?url=${encodeURIComponent(fullUrl)}`);
 }

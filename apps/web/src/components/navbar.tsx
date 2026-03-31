@@ -32,7 +32,7 @@ export function Navbar() {
     if (!q) return;
     const url = resolveUrl(q);
     if (url) {
-      router.push(`/${url}`);
+      router.push(`/analyze?url=${encodeURIComponent(url)}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(q)}`);
     }
