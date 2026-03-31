@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, Bell, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,8 +36,8 @@ export function Navbar() {
       {/* Top bar */}
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="shrink-0 text-xl font-bold text-slate-900 dark:text-slate-100">
-          <span className="text-indigo-500">Pru</span>ddo
+        <Link href="/" className="shrink-0">
+          <Image src="/logo.png.png" alt="Pruddo" width={120} height={36} className="h-9 w-auto" priority />
         </Link>
 
         {/* Search */}

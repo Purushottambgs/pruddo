@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const LINKS = {
   Product: [
@@ -27,9 +28,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
-            <div className="text-xl font-bold">
-              <span className="text-indigo-500">Pru</span>ddo
-            </div>
+            <Image src="/logo.png.png" alt="Pruddo" width={120} height={36} className="h-8 w-auto" />
             <p className="mt-3 text-sm leading-relaxed text-slate-500">
               Real reviews. Real prices. Before you buy.
             </p>
