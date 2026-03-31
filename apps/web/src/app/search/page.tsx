@@ -1,11 +1,21 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+
+function looksLikeUrl(q: string): string | null {
+  const s = q.trim();
+  // Already has protocol
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  // Bare domain like amazon.com/dp/... or www.amazon.com/...
+  if (/^(www\.)?[a-z0-9-]+\.[a-z]{2,}(\/.*)?$/i.test(s)) return `https://${s}`;
+  return null;
+}
 
 export default function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; url?: string }>;
 }) {
   return (
     <Suspense fallback={<SearchSkeleton />}>
@@ -17,9 +27,16 @@ export default function SearchPage({
 async function SearchResults({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; url?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, url } = await searchParams;
+
+  // ?url=... (legacy) or ?q=... that looks like a URL → redirect to catch-all
+  const candidate = url ?? q ?? "";
+  const resolvedUrl = looksLikeUrl(candidate);
+  if (resolvedUrl) {
+    redirect(`/${resolvedUrl}`);
+  }
 
   if (!q) {
     return (

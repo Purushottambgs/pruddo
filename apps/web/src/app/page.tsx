@@ -25,13 +25,19 @@ export default function HomePage() {
   const router = useRouter();
   const [query, setQuery] = useState("");
 
+  function resolveUrl(q: string): string | null {
+    if (q.startsWith("http://") || q.startsWith("https://")) return q;
+    if (/^(www\.)?[a-z0-9-]+\.[a-z]{2,}(\/.*)?$/i.test(q)) return `https://${q}`;
+    return null;
+  }
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     const q = query.trim();
     if (!q) return;
-    // URL → catch-all analyze route (pruddo.ai/{url})
-    if (q.startsWith("http")) {
-      router.push(`/${q}`);
+    const url = resolveUrl(q);
+    if (url) {
+      router.push(`/${url}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(q)}`);
     }
