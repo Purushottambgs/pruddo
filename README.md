@@ -144,7 +144,7 @@ pnpm build
 | GET    | `/search?q=...`               | Search products                |
 | POST   | `/clicks/track`               | Track affiliate click          |
 
-## 👨‍💻 Contributors
+##  Contributors
 
 - **Yashmori** – Project Owner & Mentor
 - **Purushottam Kumar** – Full Stack Developer
