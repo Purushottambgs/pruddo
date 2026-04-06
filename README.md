@@ -44,6 +44,7 @@ pnpm install
 Create `.env` files in each app:
 
 **apps/api/.env**
+
 ```env
 PORT=3001
 DATABASE_URL=postgresql://user:password@localhost:5432/pruddo
@@ -53,11 +54,13 @@ AMAZON_AFFILIATE_TAG=pruddo-20
 ```
 
 **apps/web/.env.local**
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
 **apps/worker/.env**
+
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/pruddo
 REDIS_URL=redis://localhost:6379
@@ -115,28 +118,34 @@ pnpm build
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Website | Next.js 15, React 19, Tailwind CSS, shadcn/ui |
-| API | Hono, Node.js, Zod |
-| Background jobs | BullMQ, Redis, ioredis |
-| Database | PostgreSQL, Drizzle ORM |
-| Extension | Chrome MV3, React + Vite |
-| AI | Anthropic Claude (claude-opus-4-6) |
-| Auth | Better Auth |
-| Email | Resend |
-| Hosting | Railway |
-| CDN | Cloudflare |
+| Layer           | Technology                                    |
+| --------------- | --------------------------------------------- |
+| Website         | Next.js 15, React 19, Tailwind CSS, shadcn/ui |
+| API             | Hono, Node.js, Zod                            |
+| Background jobs | BullMQ, Redis, ioredis                        |
+| Database        | PostgreSQL, Drizzle ORM                       |
+| Extension       | Chrome MV3, React + Vite                      |
+| AI              | Anthropic Claude (claude-opus-4-6)            |
+| Auth            | Better Auth                                   |
+| Email           | Resend                                        |
+| Hosting         | Railway                                       |
+| CDN             | Cloudflare                                    |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/health` | Health check |
-| POST | `/products/identify` | Identify product from URL/ASIN |
-| GET | `/products/:id/score` | AI trust score |
-| GET | `/products/:id/reviews` | Review summaries |
-| GET | `/products/:id/prices` | Price comparison |
-| GET | `/products/:id/price-history` | 30-day price history |
-| GET | `/search?q=...` | Search products |
-| POST | `/clicks/track` | Track affiliate click |
+| Method | Path                          | Description                    |
+| ------ | ----------------------------- | ------------------------------ |
+| GET    | `/health`                     | Health check                   |
+| POST   | `/products/identify`          | Identify product from URL/ASIN |
+| GET    | `/products/:id/score`         | AI trust score                 |
+| GET    | `/products/:id/reviews`       | Review summaries               |
+| GET    | `/products/:id/prices`        | Price comparison               |
+| GET    | `/products/:id/price-history` | 30-day price history           |
+| GET    | `/search?q=...`               | Search products                |
+| POST   | `/clicks/track`               | Track affiliate click          |
+
+## 👨‍💻 Contributors
+
+- **Yashmori** – Project Owner & Mentor
+- **Purushottam Kumar** – Full Stack Developer
+- **Neelendra Yadav** – Developer
