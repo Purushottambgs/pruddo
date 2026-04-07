@@ -16,6 +16,12 @@ const NAV_CATEGORIES = [
   { label: "Supplements", href: "/search?category=supplements" },
 ];
 
+const NAV_LINKS = [
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
 export function Navbar() {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -61,6 +67,18 @@ export function Navbar() {
 
         {/* Right actions */}
         <div className="flex shrink-0 items-center gap-2">
+          {/* Nav links */}
+          <nav className="hidden items-center gap-1 lg:flex">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="rounded-md px-3 py-1.5 text-sm text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
           <Button
             variant="ghost"
             size="icon"
