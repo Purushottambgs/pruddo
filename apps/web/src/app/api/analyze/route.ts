@@ -253,9 +253,16 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ data: result });
   } catch (err) {
-    console.error("[/api/analyze]", err);
+    const message = err instanceof Error ? err.message : String(err);
+    const isKeyMissing = message.includes("401") || message.includes("Authentication") || message.includes("api_key");
+    const isTimeout = message.includes("timeout") || message.includes("AbortError");
+    const userMessage = isKeyMissing
+      ? "AI API key is missing or invalid. Add ANTHROPIC_API_KEY to apps/web/.env.local"
+      : isTimeout
+      ? "Request timed out — Amazon may be blocking the scrape. Try again in a moment."
+      : "Analysis failed — please try again";
     return NextResponse.json(
-      { error: "Analysis failed — please try again", code: "ANALYSIS_ERROR" },
+      { error: userMessage, code: "ANALYSIS_ERROR" },
       { status: 500 }
     );
   }
