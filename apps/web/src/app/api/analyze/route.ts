@@ -140,10 +140,16 @@ async function runAnalysis(
   redditPosts: RedditPost[],
   youtubeVideos: YouTubeVideo[]
 ) {
+
+  // 🔥 DEBUG START
+  console.log("API KEY:", process.env.ANTHROPIC_API_KEY);
+  console.log("Calling Claude...");
+  // 🔥 DEBUG END
+
   const client = new Anthropic({ apiKey: process.env["ANTHROPIC_API_KEY"] });
 
   const msg = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
+    model: "claude-3-haiku-20240307",
     max_tokens: 1024,
     messages: [
       {
@@ -254,7 +260,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data: result });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    const isKeyMissing = message.includes("401") || message.includes("Authentication") || message.includes("api_key");
+    console.error("🔴 ANALYZE ERROR:", message);
+    console.error("🔴 FULL ERROR:", err);
+    const msgLower = message.toLowerCase();
+    const isKeyMissing = msgLower.includes("401") || msgLower.includes("authentication") || msgLower.includes("api_key") || msgLower.includes("api key") || msgLower.includes("missing or empty");
     const isTimeout = message.includes("timeout") || message.includes("AbortError");
     const userMessage = isKeyMissing
       ? "AI API key is missing or invalid. Add ANTHROPIC_API_KEY to apps/web/.env.local"
